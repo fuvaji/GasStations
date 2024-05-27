@@ -8,6 +8,7 @@ import { FuelInStockModule } from './fuel-in-stock/fuel-in-stock.module';
 import { DispenserModule } from './dispenser/dispenser.module';
 import { OrderModule } from './order/order.module';
 import { DeliveryModule } from './delivery/delivery.module';
+import { GasStation } from './gas-station/entities/gas-station.entity';
 
 @Module({
   imports: [
@@ -17,8 +18,8 @@ import { DeliveryModule } from './delivery/delivery.module';
       port: 5432,
       password: '123',
       username: 'postgres',
-      entities: [],
-      database: 'GasStationsSystemDB',
+      entities: [GasStation],
+      database: 'GasStationsDB',
       synchronize: true,
       logging: true,
     }),
