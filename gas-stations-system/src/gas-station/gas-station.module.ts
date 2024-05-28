@@ -8,5 +8,6 @@ import { GasStation } from './entities/gas-station.entity';
   imports: [TypeOrmModule.forFeature([GasStation])],
   controllers: [GasStationController],
   providers: [GasStationService],
+  exports: [TypeOrmModule]
 })
 export class GasStationModule {}

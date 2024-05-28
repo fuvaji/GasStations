@@ -8,5 +8,6 @@ import { Fuel } from './entities/fuel.entity';
   imports: [TypeOrmModule.forFeature([Fuel])],
   controllers: [FuelController],
   providers: [FuelService],
+  exports: [TypeOrmModule]
 })
 export class FuelModule {}
