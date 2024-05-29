@@ -12,7 +12,7 @@ export class Fuel {
     @Column({type: 'varchar'})
     Name: string;
 
-    @Column({type: 'decimal', transformer:{
+    @Column({type: 'numeric', transformer:{
         to: (value: Decimal) => value.toString(),
         from: (value: string) => new Decimal(value)
     }})

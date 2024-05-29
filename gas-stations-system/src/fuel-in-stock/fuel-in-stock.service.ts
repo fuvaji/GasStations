@@ -34,7 +34,7 @@ export class FuelInStockService {
 
     const fuelInStock = new FuelInStock();
     fuelInStock.Quantity = Quantity;
-    fuelInStock.Station = gasStation;
+    fuelInStock.GasStation = gasStation;
     fuelInStock.Fuel = fuel;
 
     return this.fuelInStockRepository.save(fuelInStock);
@@ -61,7 +61,7 @@ export class FuelInStockService {
 
     const fuelInStock = new FuelInStock();
     fuelInStock.Quantity = Quantity;
-    fuelInStock.Station = gasStation;
+    fuelInStock.GasStation = gasStation;
     fuelInStock.Fuel = fuel;
     fuelInStock.StockID = StockID;
 
