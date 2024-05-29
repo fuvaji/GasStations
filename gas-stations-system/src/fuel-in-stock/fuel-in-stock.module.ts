@@ -14,5 +14,6 @@ import { GasStationModule } from 'src/gas-station/gas-station.module';
   ],
   controllers: [FuelInStockController],
   providers: [FuelInStockService],
+  exports: [TypeOrmModule]
 })
 export class FuelInStockModule {}
