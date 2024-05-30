@@ -51,7 +51,6 @@ export class DeliveryService {
       fuelInStock.Quantity=Quantity;
     }
     else{
-      console.log(fuelInStock);
       fuelInStock.Quantity=+fuelInStock.Quantity + +Quantity;
     }
 
