@@ -22,11 +22,6 @@ export class DeliveryController {
     return this.deliveryService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDeliveryDto: UpdateDeliveryDto) {
-    return this.deliveryService.update(+id, updateDeliveryDto);
-  }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.deliveryService.remove(+id);

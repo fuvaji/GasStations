@@ -12,6 +12,7 @@ import { GasStation } from './gas-station/entities/gas-station.entity';
 import { Fuel } from './fuel/entities/fuel.entity';
 import { FuelInStock } from './fuel-in-stock/entities/fuel-in-stock.entity';
 import { Dispenser } from './dispenser/entities/dispenser.entity';
+import { Delivery } from './delivery/entities/delivery.entity';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { Dispenser } from './dispenser/entities/dispenser.entity';
       port: 5432,
       password: '123',
       username: 'postgres',
-      entities: [GasStation, Fuel, FuelInStock, Dispenser],
+      entities: [GasStation, Fuel, FuelInStock, Dispenser, Delivery],
       database: 'GasStationsDB',
       synchronize: true,
       logging: true,
