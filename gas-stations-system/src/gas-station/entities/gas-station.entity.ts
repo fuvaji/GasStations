@@ -1,3 +1,4 @@
+import { Delivery } from 'src/delivery/entities/delivery.entity';
 import { Dispenser } from 'src/dispenser/entities/dispenser.entity';
 import { FuelInStock } from 'src/fuel-in-stock/entities/fuel-in-stock.entity';
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
@@ -15,4 +16,7 @@ export class GasStation{
 
     @OneToMany(()=>Dispenser, dispenser=>dispenser.GasStation)
     Dispensers: Dispenser[];
+
+    @OneToMany(()=>Delivery, delivery=>delivery.GasStation)
+    Deliveries: Delivery[];
 }
