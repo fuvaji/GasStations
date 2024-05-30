@@ -16,5 +16,6 @@ import { FuelInStockModule } from 'src/fuel-in-stock/fuel-in-stock.module';
   ],
   controllers: [DeliveryController],
   providers: [DeliveryService],
+  exports: [TypeOrmModule]
 })
 export class DeliveryModule {}

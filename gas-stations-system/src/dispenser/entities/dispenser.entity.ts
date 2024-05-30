@@ -1,6 +1,7 @@
 import { FuelInStock } from "src/fuel-in-stock/entities/fuel-in-stock.entity";
 import { GasStation } from "src/gas-station/entities/gas-station.entity";
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Order } from "src/order/entities/order.entity";
+import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Dispenser {
@@ -12,4 +13,7 @@ export class Dispenser {
 
     @ManyToOne(()=>FuelInStock, fuelInStock=>fuelInStock.StockID)
     FuelInStock: FuelInStock;
+
+    @OneToMany(()=>Order , order=>order.Dispenser)
+    Orders: Order[];
 }
