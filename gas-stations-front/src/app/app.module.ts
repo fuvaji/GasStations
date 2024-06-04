@@ -5,10 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApiService } from './api.service';
+import { LoginComponent } from './login/login.component';
+import { DataViewComponent } from './data-view/data-view.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    DataViewComponent
   ],
   imports: [
     BrowserModule,
