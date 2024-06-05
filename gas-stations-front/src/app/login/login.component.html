@@ -1,1 +1,5 @@
-<p>login works!</p>
+<div class="container">
+        <input type="text" placeholder="Логін" name="username" [(ngModel)]="loginData.username"  />
+        <input type="password" placeholder="Пароль" name="password" [(ngModel)]="loginData.password"  />
+        <button (click)="login()">Увійти</button>
+  </div>
