@@ -33,4 +33,10 @@ export class OrderController {
   {
     return this.orderService.getAllStationOrders(+id);
   }
+
+  @Get('/dispenser/:id')
+  getAllDispenserOrders(@Param('id') id: string)
+  {
+    return this.orderService.getAllDispenserOrders(+id);
+  }
 }

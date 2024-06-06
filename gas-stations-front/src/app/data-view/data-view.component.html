@@ -30,18 +30,22 @@
       </div>
       <div class="scrollable-list">
         <div *ngFor="let item of displayItems" class="item">
-          <div *ngIf="item.type === 'order'" class="order">
+          <div *ngIf="item.type === 'orderDispenser'" class="order">
             <div class="item-header">Заправлення №{{ item.OrderID }} || {{ item.Timestamp | date:'dd/MM/yyyy HH:mm:ss' }}</div>
-            <div>Заправлено {{ item.Quanity | number:'1.2-2' }} л. {{ item.Dispenser.FuelInStock.Fuel.Name }} за ціною {{ item.Price | number:'1.2-2' }} грн/л - {{ item.Amount | number:'1.2-2' }} грн.</div>
+            <div>Заправлено {{ item.Quantity | number:'1.2-2' }} л. {{ item.Dispenser.FuelInStock.Fuel.Name }} за ціною {{ item.Price | number:'1.2-2' }} грн/л - {{ item.Amount | number:'1.2-2' }} грн.</div>
+          </div>
+          <div *ngIf="item.type === 'orderStation'" class="order">
+            <div class="item-header">Заправлення №{{ item.OrderID }} || {{ item.Timestamp | date:'dd/MM/yyyy HH:mm:ss' }} || ПРК №{{item.Dispenser.DispenserID}}</div>
+            <div>Заправлено {{ item.Quantity | number:'1.2-2' }} л. {{ item.Dispenser.FuelInStock.Fuel.Name }} за ціною {{ item.Price | number:'1.2-2' }} грн/л - {{ item.Amount | number:'1.2-2' }} грн.</div>
           </div>
           <div *ngIf="item.type === 'delivery'" class="delivery">
-            <div class="item-header">Поставка №{{ item.DeliveryID }} || {{ item.timestamp }}</div>
-            <div>Ортимано {{ item.Quantity }} л. {{ item.Fuel.Name }}.</div>
+            <div class="item-header">Поставка №{{ item.DeliveryID }} || {{ item.Timestamp | date:'dd/MM/yyyy HH:mm:ss' }}</div>
+            <div>Ортимано {{ item.Quantity | number:'1.2-2' }} л. {{ item.Fuel.Name }}.</div>
           </div>
         </div>
       </div>
       <div class="footer">
-        <select [(ngModel)]="selectedFooterMetric" (change)="updateData()">
+        <select [(ngModel)]="selectedFooterMetric">
             <option *ngFor="let option of footerMetricOptions" [value]="option.value">{{ option.label }}</option>
           </select>
         <button (click)="generateChart()">Отримати графік</button>

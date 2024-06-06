@@ -1,12 +1,16 @@
 .container {
     display: flex;
+    height: 100vh;
+    background-color: #333;
   }
   
   .sidebar {
-    width: 300px;
-    background-color: #333;
+    width: 15%;
+    background-color: #242424;
     color: #fff;
     overflow-y: auto;
+    border-radius: 10px;
+    margin: 20px;
   }
   
   .station {
@@ -43,6 +47,8 @@
     padding: 20px;
     background-color: #222;
     color: #fff;
+    border-radius: 10px;
+    margin: 20px;
   }
   
   .filter-bar {
@@ -62,7 +68,7 @@
   }
   
   .scrollable-list {
-    height: 400px;
+    height: 45%;
     overflow-y: auto;
     background-color: #111;
     padding: 10px;

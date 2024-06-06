@@ -11,7 +11,7 @@ export class Order {
     Dispenser: Dispenser;
 
     @Column({type: 'decimal'})
-    Quanity: number;
+    Quantity: number;
 
     @Column({type: 'numeric', transformer:{
         to: (value: Decimal) => value.toString(),

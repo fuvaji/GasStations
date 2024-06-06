@@ -28,4 +28,10 @@ export class DeliveryController {
   remove(@Param('id') id: string) {
     return this.deliveryService.remove(+id);
   }
+
+  @Get('station/:id')
+  getAllStationDeliveries(@Param('id') id: string)
+  {
+    return this.deliveryService.getAllStationDeliveries(+id);
+  }
 }

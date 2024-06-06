@@ -67,20 +67,42 @@ export class DataViewComponent implements OnInit {
         { value: 'volume', label: 'Обєм залитого палива' },
         { value: 'cost', label: 'Вартість заправлення' },
       ]
-      this.nestjsService.getOrdersAll(stationId).subscribe(response=>{
-        this.fetchedItems = response.map(order=>({...order, type: 'order'}));
+      this.nestjsService.getAllStationOrders(stationId).subscribe(response=>{
+        this.fetchedItems = response.map(order=>({...order, type: 'orderStation'}));
         console.log(this.fetchedItems);
         this.updateData();
       })
-    } /*else if (dispenserId === 'supplies') {
-      this.http.get<any[]>(`/api/stations/${stationId}/deliveries`).subscribe(data => {
-        this.displayItems = data.map(delivery => ({ ...delivery, type: 'delivery' }));
-      });
+    } else if (dispenserId === 'supplies') {
+      this.metricOptions = [
+        { value: 'volume', label: 'Обєм доставленого палива' },
+        { value: 'date', label: 'Дата доставки' },
+        { value: 'petrol', label: 'Тип палива' },
+      ]
+      this.footerMetricOptions = [
+        { value: 'volume', label: 'Обєм залитого палива' },
+        { value: 'cost', label: 'Вартість заправлення' },
+      ]
+      this.nestjsService.getAllStationDeliveries(stationId).subscribe(response=>{
+        this.fetchedItems = response.map(supply=>({...supply, type: 'delivery'}));
+        console.log(this.fetchedItems);
+        this.updateData();
+      })
     } else {
-      this.http.get<any[]>(`/api/stations/${stationId}/dispensers/${dispenserId}/orders`).subscribe(data => {
-        this.displayItems = data.map(order => ({ ...order, type: 'order' }));
-      });
-    }*/
+      this.metricOptions = [
+        { value: 'volume', label: 'Обєм залитого палива' },
+        { value: 'date', label: 'Дата заправлення' },
+        { value: 'cost', label: 'Вартість заправлення' },
+      ]
+      this.footerMetricOptions = [
+        { value: 'volume', label: 'Обєм залитого палива' },
+        { value: 'cost', label: 'Вартість заправлення' },
+      ]
+      this.nestjsService.getAllDispenserOrders(Number(dispenserId)).subscribe(response=>{
+        this.fetchedItems = response.map(order=>({...order, type: 'orderDispenser'}));
+        console.log(this.fetchedItems);
+        this.updateData();
+      })
+    }
   }
 
   updateData() {
@@ -93,23 +115,32 @@ export class DataViewComponent implements OnInit {
     {
       case 'volume':
         this.displayItems.sort((a: any, b:any)=>{
-            return a.Quanity - b.Quanity
+            return b.Quantity - a.Quantity
       });
       break;
       case 'cost':
         this.displayItems.sort((a: any, b:any)=>{
-          return a.Amount - b.Amount
+          return b.Amount - a.Amount
         });
         break;
       case 'date':
         this.displayItems.sort((a: any, b: any)=>{
-          return a.Timestamp - b.Timestamp
+          return b.Timestamp - a.Timestamp
         });
         break;
       case 'petrol':
-        this.displayItems.sort((a: any, b: any)=>{
-          return a.Dispenser.FuelInStock.Fuel.Name - b.Dispenser.FuelInStock.Fuel.Name
-        })
+        if(this.selectedDispenser.dispenserId == 'supplies')
+          {
+          this.displayItems.sort((a: any, b: any)=>{
+            return a.Fuel.Name - b.Fuel.Name
+          })
+        }
+        else
+        {
+          this.displayItems.sort((a: any, b: any)=>{
+            return a.Dispenser.FuelInStock.Fuel.Name - b.Dispenser.FuelInStock.Fuel.Name
+          })
+        }
   }
   }
 
