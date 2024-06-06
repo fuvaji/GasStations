@@ -16,7 +16,7 @@ export class FuelService {
     const fuel: Fuel = new Fuel();
     fuel.Name = createFuelDto.Name;
     fuel.Type = createFuelDto.Type;
-    fuel.Price = createFuelDto.Price;
+    fuel.Price = createFuelDto.Price.toNumber();
     return this.fuelRepository.save(fuel);
   }
 
@@ -32,7 +32,7 @@ export class FuelService {
     const fuel: Fuel = new Fuel();
     fuel.Name = updateFuelDto.Name;
     fuel.Type = updateFuelDto.Type;
-    fuel.Price = updateFuelDto.Price;
+    fuel.Price = updateFuelDto.Price.toNumber();
     fuel.FuelID = FuelID;
     return this.fuelRepository.save(fuel);
   }

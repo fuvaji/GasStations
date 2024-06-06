@@ -1,1 +1,50 @@
-<p>data-view works!</p>
+<div class="container">
+    <div class="sidebar">
+      <div *ngFor="let station of stations" class="station">
+        <div class="station-header" (click)="toggleStation(station.StationID)">
+          АЗК №{{ station.StationID }} || {{ station.Address }}
+        </div>
+        <div *ngIf="isStationOpen(station.StationID)" class="dropdown-content">
+            <div class="dropdown-item"
+                 [ngClass]="{ 'selected': isSelected(station.StationID, 'all') }"
+                 (click)="selectDispenser(station.StationID, 'all')">Всі ПРК</div>
+            <div class="dropdown-item"
+                 [ngClass]="{ 'selected': isSelected(station.StationID, 'supplies') }"
+                 (click)="selectDispenser(station.StationID, 'supplies')">Поставки</div>
+            <div *ngFor="let dispenser of station.Dispensers"
+                 class="dropdown-item"
+                 [ngClass]="{ 'selected': isSelected(station.StationID, dispenser.DispenserID) }"
+                 (click)="selectDispenser(station.StationID, dispenser.DispenserID)">
+              ПРК №{{ dispenser.DispenserID }} || {{ dispenser.FuelInStock.Fuel.Name }}
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="filter-bar">
+        <select [(ngModel)]="selectedMetric" (change)="updateData()">
+            <option *ngFor="let option of metricOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+        <input type="date" [(ngModel)]="startDate" (change)="updateData()" />
+        <input type="date" [(ngModel)]="endDate" (change)="updateData()" />
+      </div>
+      <div class="scrollable-list">
+        <div *ngFor="let item of displayItems" class="item">
+          <div *ngIf="item.type === 'order'" class="order">
+            <div class="item-header">Заправлення №{{ item.OrderID }} || {{ item.Timestamp | date:'dd/MM/yyyy HH:mm:ss' }}</div>
+            <div>Заправлено {{ item.Quanity | number:'1.2-2' }} л. {{ item.Dispenser.FuelInStock.Fuel.Name }} за ціною {{ item.Price | number:'1.2-2' }} грн/л - {{ item.Amount | number:'1.2-2' }} грн.</div>
+          </div>
+          <div *ngIf="item.type === 'delivery'" class="delivery">
+            <div class="item-header">Поставка №{{ item.DeliveryID }} || {{ item.timestamp }}</div>
+            <div>Ортимано {{ item.Quantity }} л. {{ item.Fuel.Name }}.</div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <select [(ngModel)]="selectedFooterMetric" (change)="updateData()">
+            <option *ngFor="let option of footerMetricOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+        <button (click)="generateChart()">Отримати графік</button>
+      </div>
+    </div>
+  </div>

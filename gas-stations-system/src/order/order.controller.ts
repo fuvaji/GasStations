@@ -27,4 +27,10 @@ export class OrderController {
   remove(@Param('id') id: string) {
     return this.orderService.remove(+id);
   }
+
+  @Get('station/:id')
+  getAllStationOrders(@Param('id') id: string)
+  {
+    return this.orderService.getAllStationOrders(+id);
+  }
 }

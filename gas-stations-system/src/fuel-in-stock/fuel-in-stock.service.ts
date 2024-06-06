@@ -41,7 +41,11 @@ export class FuelInStockService {
   }
 
   findAll() : Promise<FuelInStock[]> {
-    return this.fuelInStockRepository.find();
+    return this.fuelInStockRepository.find({
+      relations: [
+        'Fuel'
+      ]
+    });
   }
 
   findOne(StockID: number) : Promise<FuelInStock> {

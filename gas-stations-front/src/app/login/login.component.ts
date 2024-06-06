@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { NestjsService } from '../nestjs.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,20 +10,19 @@ import { NestjsService } from '../nestjs.service';
 export class LoginComponent {
   loginData = {username: '', password: ''};
 
-  constructor(private authService: AuthService, private nestjs: NestjsService){}
+  constructor(private authService: AuthService, private router: Router){}
 
   login(): void {
-    console.log('Username:', this.loginData);
-    this.nestjs.getProtectedResource().subscribe(response=>{
-      console.log(response);
-    })
+    console.log(this.loginData);
     this.authService.login(this.loginData).subscribe(response=>{
       if(response.success){
         console.log('Login successful');
         localStorage.setItem('token', response.token);
+        this.router.navigate(['service']);
       } else{
         console.log('Login failed');
       }
     })
+    
   }
 }

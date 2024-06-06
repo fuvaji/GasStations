@@ -1,0 +1,98 @@
+.container {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 300px;
+    background-color: #333;
+    color: #fff;
+    overflow-y: auto;
+  }
+  
+  .station {
+    border-bottom: 1px solid #444;
+  }
+  
+  .station-header {
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .dropdown-content {
+    padding-left: 20px;
+  }
+  
+  .dropdown-item {
+    padding: 5px 0;
+    cursor: pointer;
+  }
+  
+  .dropdown-item.selected {
+    background-color: #70BF45;
+    color: #242424;
+  }
+
+  .dropdown-item:hover {
+    background-color: #345422;
+    color: #fff;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #222;
+    color: #fff;
+  }
+  
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .filter-bar select, .filter-bar input {
+    padding: 5px;
+  }
+  
+  .filter-bar button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .scrollable-list {
+    height: 400px;
+    overflow-y: auto;
+    background-color: #111;
+    padding: 10px;
+  }
+  
+  .item {
+    background-color: #333;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #fff;
+  }
+  
+  .item-header {
+    font-weight: bold;
+    font-size: larger;
+  }
+  
+  .footer {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .footer select {
+    padding: 5px;
+  }
+  
+  .footer button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }

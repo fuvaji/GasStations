@@ -4,10 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ApiService } from './api.service';
 import { LoginComponent } from './login/login.component';
 import { DataViewComponent } from './data-view/data-view.component';
 import { FormsModule } from '@angular/forms';
+import { NestjsService } from './nestjs.service';
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
-    ApiService
+    NestjsService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,6 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm'
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
 import { Decimal } from 'decimal.js';
+import { Delivery } from 'src/delivery/entities/delivery.entity';
 
 @Entity()
 export class Fuel {
@@ -12,9 +13,9 @@ export class Fuel {
     @Column({type: 'varchar'})
     Name: string;
 
-    @Column({type: 'numeric', transformer:{
-        to: (value: Decimal) => value.toString(),
-        from: (value: string) => new Decimal(value)
-    }})
-    Price: Decimal;
+    @Column({type: 'numeric', })
+    Price: number;
+
+    @OneToMany(() => Delivery, delivery => delivery.Fuel)
+    Deliveries: Delivery[];
 }
