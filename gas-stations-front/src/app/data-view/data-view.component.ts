@@ -26,7 +26,7 @@ export class DataViewComponent implements OnInit, AfterViewInit {
   selectedMetric: string = 'volume';
   selectedFooterMetric: string = 'volume';
   selectedFooterChart: string = 'petrol';
-  startDate: string = '2000-01-01';
+  startDate: string = '2020-01-01';
   endDate: string = '2025-01-01';
   openStations: number[] = [];
 

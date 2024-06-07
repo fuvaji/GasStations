@@ -23,6 +23,18 @@ export class ChartComponent {
         datasets: [{
           label: this.chartDataService.label,
           data: this.chartDataService.data,
+          backgroundColor: [
+            'rgba(90, 255, 0, 0.3)', 
+            'rgba(112, 191, 69, 0.3)', 
+            'rgba(52, 94, 29, 0.3)', 
+            'rgba(184, 246, 150, 0.3)', 
+        ],
+        borderColor: [
+          'rgba(90, 255, 0, 1)', 
+          'rgba(112, 191, 69, 1)', 
+          'rgba(52, 94, 29, 1)', 
+          'rgba(184, 246, 150, 1)', 
+        ],
           borderWidth: 1
         }]
       },
