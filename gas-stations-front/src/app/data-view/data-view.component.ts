@@ -34,10 +34,10 @@ export class DataViewComponent implements OnInit, AfterViewInit {
 
   constructor(private nestjsService: NestjsService, private chartDataService: ChartDataService, private cdr: ChangeDetectorRef) { }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.chartComponent.resetChart();
   }
-  reinitializeChart(){
+  reinitializeChart() {
     this.chartComponent.resetChart();
   }
   ngOnInit() {
@@ -82,6 +82,13 @@ export class DataViewComponent implements OnInit, AfterViewInit {
         { value: 'cost', label: 'Вартість заправлення' },
         { value: 'petrol', label: 'Тип палива' },
       ]
+      this.footerChartOptions = [
+        { value: 'petrol', label: 'Тип палива' },
+        { value: 'date', label: 'Дата заправлення' },
+      ];
+      this.selectedMetric = 'volume';
+      this.selectedFooterMetric = 'volume';
+      this.selectedFooterChart = 'petrol';
       this.nestjsService.getAllStationOrders(stationId).subscribe(response => {
         this.fetchedItems = response.map(order => ({ ...order, type: 'orderStation' }));
         console.log(this.fetchedItems);
@@ -93,6 +100,13 @@ export class DataViewComponent implements OnInit, AfterViewInit {
         { value: 'date', label: 'Дата доставки' },
         { value: 'petrol', label: 'Тип палива' },
       ]
+      this.footerChartOptions = [
+        { value: 'petrol', label: 'Тип палива' },
+        { value: 'date', label: 'Дата поставки' },
+      ];
+      this.selectedMetric = 'volume';
+      this.selectedFooterMetric = 'volume';
+      this.selectedFooterChart = 'petrol';
       this.nestjsService.getAllStationDeliveries(stationId).subscribe(response => {
         this.fetchedItems = response.map(supply => ({ ...supply, type: 'delivery' }));
         console.log(this.fetchedItems);
@@ -104,6 +118,13 @@ export class DataViewComponent implements OnInit, AfterViewInit {
         { value: 'date', label: 'Дата заправлення' },
         { value: 'cost', label: 'Вартість заправлення' },
       ]
+      this.footerChartOptions = [
+        { value: 'petrol', label: 'Тип палива' },
+        { value: 'date', label: 'Дата заправлення' },
+      ];
+      this.selectedMetric = 'volume';
+      this.selectedFooterMetric = 'volume';
+      this.selectedFooterChart = 'petrol';
       this.nestjsService.getAllDispenserOrders(Number(dispenserId)).subscribe(response => {
         this.fetchedItems = response.map(order => ({ ...order, type: 'orderDispenser' }));
         console.log(this.fetchedItems);
@@ -139,14 +160,14 @@ export class DataViewComponent implements OnInit, AfterViewInit {
       case 'petrol':
         if (this.selectedDispenser.dispenserId === 'supplies') {
           this.displayItems.sort((a: any, b: any) => {
-            return a.Fuel.Name - b.Fuel.Name
-          })
-        }
-        else {
+            return a.Fuel.Name.localeCompare(b.Fuel.Name);
+          });
+        } else {
           this.displayItems.sort((a: any, b: any) => {
-            return a.Dispenser.FuelInStock.Fuel.Name - b.Dispenser.FuelInStock.Fuel.Name
-          })
+            return a.Dispenser.FuelInStock.Fuel.Name.localeCompare(b.Dispenser.FuelInStock.Fuel.Name);
+          });
         }
+        break;
     }
   }
 
@@ -447,7 +468,7 @@ export class DataViewComponent implements OnInit, AfterViewInit {
     console.log(this.chartDataService);
     this.reinitializeChart();
   }
-  
+
   getDataGranulation(): string {
     const durationInDays = Math.abs((new Date(this.endDate).getTime() - new Date(this.startDate).getTime()) / (1000 * 60 * 60 * 24));
     if (durationInDays < 60) {
