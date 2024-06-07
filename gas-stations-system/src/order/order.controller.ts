@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('order')
 export class OrderController {
@@ -29,12 +30,14 @@ export class OrderController {
   }
 
   @Get('station/:id')
+  @UseGuards(AuthGuard('jwt'))
   getAllStationOrders(@Param('id') id: string)
   {
     return this.orderService.getAllStationOrders(+id);
   }
 
   @Get('/dispenser/:id')
+  @UseGuards(AuthGuard('jwt'))
   getAllDispenserOrders(@Param('id') id: string)
   {
     return this.orderService.getAllDispenserOrders(+id);

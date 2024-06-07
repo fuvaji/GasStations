@@ -14,7 +14,6 @@ export class DeliveryController {
   }
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
   findAll() {
     return this.deliveryService.findAll();
   }
@@ -30,6 +29,7 @@ export class DeliveryController {
   }
 
   @Get('station/:id')
+  @UseGuards(AuthGuard('jwt'))
   getAllStationDeliveries(@Param('id') id: string)
   {
     return this.deliveryService.getAllStationDeliveries(+id);
