@@ -9,12 +9,15 @@ import { DataViewComponent } from './data-view/data-view.component';
 import { FormsModule } from '@angular/forms';
 import { NestjsService } from './nestjs.service';
 import { AuthService } from './auth.service';
+import { ChartComponent } from './chart/chart.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DataViewComponent
+    DataViewComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,

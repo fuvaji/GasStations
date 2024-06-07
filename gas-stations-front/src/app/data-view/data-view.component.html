@@ -22,10 +22,13 @@
     </div>
     <div class="main-content">
       <div class="filter-bar">
+        <div>Сортувати за: </div>
         <select [(ngModel)]="selectedMetric" (change)="updateData()">
             <option *ngFor="let option of metricOptions" [value]="option.value">{{ option.label }}</option>
           </select>
+          <div> За датами: </div>
         <input type="date" [(ngModel)]="startDate" (change)="updateData()" />
+        <div> --- </div>
         <input type="date" [(ngModel)]="endDate" (change)="updateData()" />
       </div>
       <div class="scrollable-list">
@@ -45,9 +48,20 @@
         </div>
       </div>
       <div class="footer">
-        <select [(ngModel)]="selectedFooterMetric">
-            <option *ngFor="let option of footerMetricOptions" [value]="option.value">{{ option.label }}</option>
+        <div class="select-container">
+          <div *ngIf="!(selectedDispenser.dispenserId === 'supplies')" class="select-container">
+            <div>Дані по : </div>
+            <select [(ngModel)]="selectedFooterMetric" >
+              <option *ngFor="let option of footerMetricOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+          </div>
+        <div *ngIf="(selectedDispenser.dispenserId === 'all' || selectedDispenser.dispenserId === 'supplies')" class="select-container">
+          <div>Графік за: </div>
+          <select  [(ngModel)]="selectedFooterChart" >
+            <option *ngFor="let option of footerChartOptions" [value]="option.value">{{ option.label }}</option>
           </select>
+        </div>
+        </div>
         <button (click)="generateChart()">Отримати графік</button>
       </div>
     </div>
