@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { GasStationService } from './gas-station.service';
 import { CreateGasStationDto } from './dto/create-gas-station.dto';
 import { UpdateGasStationDto } from './dto/update-gas-station.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('gas-station')
 export class GasStationController {
@@ -13,6 +14,7 @@ export class GasStationController {
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   findAll() {
     return this.gasStationService.findAll();
   }

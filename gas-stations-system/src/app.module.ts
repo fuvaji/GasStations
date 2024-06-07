@@ -14,6 +14,7 @@ import { FuelInStock } from './fuel-in-stock/entities/fuel-in-stock.entity';
 import { Dispenser } from './dispenser/entities/dispenser.entity';
 import { Delivery } from './delivery/entities/delivery.entity';
 import { Order } from './order/entities/order.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { Order } from './order/entities/order.entity';
     DispenserModule,
     OrderModule,
     DeliveryModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

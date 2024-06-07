@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ApiService } from './api.service';
+import { NestjsService } from './nestjs.service';
 
-describe('ApiService', () => {
-  let service: ApiService;
+describe('NestjsService', () => {
+  let service: NestjsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ApiService);
+    service = TestBed.inject(NestjsService);
   });
 
   it('should be created', () => {

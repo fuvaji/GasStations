@@ -19,7 +19,14 @@ export class GasStationService {
   }
 
   findAll(): Promise<GasStation[]> {
-    return this.gasStationRepository.find();
+    return this.gasStationRepository.find({
+      relations: [
+        'Deliveries', 
+        'Dispensers',
+        'Dispensers.FuelInStock',
+        'Dispensers.FuelInStock.Fuel'
+      ]
+    })
   }
 
   findOne(StationID: number): Promise<GasStation> {

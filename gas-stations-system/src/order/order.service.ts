@@ -42,10 +42,10 @@ export class OrderService {
     fuelInStock.Quantity = +fuelInStock.Quantity - +Quantity;
 
     const order = new Order();
-    order.Quanity = Quantity;
+    order.Quantity = Quantity;
     order.Dispenser=dispenser;
-    order.Price=dispenser.FuelInStock.Fuel.Price;
-    order.Amount=new Decimal((+dispenser.FuelInStock.Fuel.Price.toNumber()* +Quantity).toFixed(2));
+    order.Price=new Decimal(dispenser.FuelInStock.Fuel.Price);
+    order.Amount=new Decimal((+dispenser.FuelInStock.Fuel.Price* +Quantity).toFixed(2));
     order.Timestamp = new Date();
 
     await this.fuelInStockRepository.save(fuelInStock);
@@ -62,5 +62,37 @@ export class OrderService {
 
   remove(OrderID: number) : Promise<{affected?: number}> {
     return this.orderRepository.delete(OrderID);
+  }
+
+  getAllStationOrders(StationID: number): Promise<Order[]>{
+    return this.orderRepository.find({
+      where: {
+        Dispenser: {
+          GasStation: {
+            StationID: StationID
+          }
+        }
+      },
+      relations:[
+        'Dispenser',
+        'Dispenser.FuelInStock',
+        'Dispenser.FuelInStock.Fuel'
+      ]
+    });
+  }
+
+  getAllDispenserOrders(DispenserID: number): Promise<Order[]>{
+    return this.orderRepository.find({
+      where: {
+        Dispenser: {
+          DispenserID: DispenserID
+        }
+      },
+      relations:[
+        'Dispenser',
+        'Dispenser.FuelInStock',
+        'Dispenser.FuelInStock.Fuel'
+      ]
+    });
   }
 }

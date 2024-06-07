@@ -1,0 +1,10 @@
+.child-container {
+    width: 100%; /* Fill parent container horizontally */
+    height: 100%; /* Fill parent container vertically */
+  }
+  
+  canvas {
+    width: 100%; /* Fill container width */
+    height: 100%; /* Fill container height */
+    display: block; /* Make canvas a block element to properly fill its container */
+  }

@@ -76,4 +76,17 @@ export class DeliveryService {
   remove(DeliveryID: number) : Promise<{affected?: number}> {
     return this.deliveryRepository.delete(DeliveryID);
   }
+
+  getAllStationDeliveries(StationID: number): Promise<Delivery[]>{
+    return this.deliveryRepository.find({
+      where: {
+        GasStation:{
+          StationID: StationID
+        }
+      },
+      relations:[
+        'Fuel'
+      ]
+    });
+  }
 }
