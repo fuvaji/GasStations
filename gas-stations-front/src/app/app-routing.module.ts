@@ -7,7 +7,8 @@ import { ChartComponent } from './chart/chart.component';
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'service', component: DataViewComponent},
-  {path: 'chart', component: ChartComponent}
+  {path: 'chart', component: ChartComponent},
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
 @NgModule({
