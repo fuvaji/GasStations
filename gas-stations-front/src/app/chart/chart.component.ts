@@ -7,17 +7,15 @@ import { ChartDataService } from '../chart-data.service';
   templateUrl: './chart.component.html',
   styleUrl: './chart.component.css'
 })
-export class ChartComponent implements OnInit, AfterViewInit {
+export class ChartComponent {
   @ViewChild('myChart') myChartRef!: ElementRef;
   myChart: any;
 
   constructor(private chartDataService: ChartDataService) { }
-
-  ngOnInit(): void {
-    // Chart initialization logic moved to ngAfterViewInit
-  }
-
-  ngAfterViewInit(): void {
+  resetChart(): void{
+    if(this.myChart != null){
+      (this.myChart as Chart).destroy();
+    }
     this.myChart = new Chart(this.myChartRef.nativeElement, {
       type: this.chartDataService.chartType,
       data: {

@@ -68,7 +68,7 @@
   }
   
   .scrollable-list {
-    height: 45%;
+    height: 40%;
     overflow-y: auto;
     background-color: #111;
     padding: 10px;
@@ -109,3 +109,14 @@
     padding: 5px 10px;
     cursor: pointer;
   }
+
+  .chart-container {
+    background-color: #111;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    margin: 20px;
+    height: 40%;
+  }
+
+

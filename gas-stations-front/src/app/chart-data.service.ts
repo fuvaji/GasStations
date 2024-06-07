@@ -5,9 +5,9 @@ import { ChartTypeRegistry } from 'chart.js';
   providedIn: 'root'
 })
 export class ChartDataService {
+  constructor(){}
   chartType: keyof ChartTypeRegistry = 'bar';
   labels: string[] = [];
   label: string = '';
   data: number[] = [];
-  constructor() { }
 }

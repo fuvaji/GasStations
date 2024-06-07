@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NestjsService } from '../nestjs.service';
 import { ChartDataService } from '../chart-data.service';
 import { Router } from '@angular/router';
+import { ChartComponent } from '../chart/chart.component';
 
 @Component({
   selector: 'app-data-view',
   templateUrl: './data-view.component.html',
   styleUrl: './data-view.component.css'
 })
-export class DataViewComponent implements OnInit {
+export class DataViewComponent implements OnInit, AfterViewInit {
   stations: any[] = [];
   fetchedItems: any[] = [];
   displayItems: any[] = [];
@@ -29,8 +30,16 @@ export class DataViewComponent implements OnInit {
   endDate: string = '2025-01-01';
   openStations: number[] = [];
 
-  constructor(private nestjsService: NestjsService, private chartDataService: ChartDataService, private router: Router) { }
+  @ViewChild(ChartComponent) chartComponent!: ChartComponent;
 
+  constructor(private nestjsService: NestjsService, private chartDataService: ChartDataService, private cdr: ChangeDetectorRef) { }
+
+  ngAfterViewInit(){
+    this.chartComponent.resetChart();
+  }
+  reinitializeChart(){
+    this.chartComponent.resetChart();
+  }
   ngOnInit() {
     this.loadStations();
   }
@@ -144,6 +153,7 @@ export class DataViewComponent implements OnInit {
   generateChart() {
     // Implement chart generation logic based on selectedDispenser and selectedFooterMetric
     const dates = this.getDateRanges();
+    const granulation = this.getDataGranulation();
     console.log(dates);
     console.log('Generating chart with:', this.selectedDispenser, this.selectedFooterMetric, this.selectedFooterChart);
     if (this.selectedDispenser.dispenserId === 'supplies') {
@@ -179,6 +189,38 @@ export class DataViewComponent implements OnInit {
       }
       else {
         this.chartDataService.chartType = 'line';
+        const labels: string[] = [];
+        const data: number[] = [];
+
+        for (const dateRange of dates) {
+          let label: string;
+          if (granulation === 'days') {
+            label = `${dateRange.itemStart.getDate()} ${dateRange.itemStart.toLocaleString('default', { month: 'short' })}`;
+          } else if (granulation === 'months') {
+            label = dateRange.itemStart.toLocaleString('default', { month: 'short' }) + ' ' + dateRange.itemStart.getFullYear();
+          } else {
+            label = dateRange.itemStart.getFullYear().toString();
+          }
+
+          const sumQuantity = this.displayItems.reduce((accumulator, currentItem) => {
+            const itemDate = new Date(currentItem.Timestamp);
+            if (itemDate >= dateRange.itemStart && itemDate < dateRange.itemEnd) {
+              accumulator += +currentItem.Quantity;
+            }
+            return accumulator;
+          }, 0);
+
+          // Add label and sum to respective arrays
+          labels.push(label);
+          data.push(sumQuantity);
+        }
+
+        // Log labels and data
+        console.log(labels);
+        console.log(data);
+
+        this.chartDataService.labels = labels;
+        this.chartDataService.data = data;
       }
       this.chartDataService.label = 'Кількість отриманого бензину в л.';
 
@@ -189,8 +231,6 @@ export class DataViewComponent implements OnInit {
         this.chartDataService.chartType = 'bar';
 
         if (this.selectedFooterMetric === 'volume') {
-
-          this.chartDataService.chartType = 'bar';
           const fuelSum = this.displayItems.reduce((accumulator, currentItem) => {
             const fuelName = currentItem.Dispenser.FuelInStock.Fuel.Name;
             const quantity = currentItem.Quantity;
@@ -217,10 +257,10 @@ export class DataViewComponent implements OnInit {
           console.log(data);
           this.chartDataService.labels = labels;
           this.chartDataService.data = data;
+
+          this.chartDataService.label = 'Кількість залитого бензину в л.';
         }
         else {
-
-          this.chartDataService.chartType = 'bar';
           const fuelSum = this.displayItems.reduce((accumulator, currentItem) => {
             const fuelName = currentItem.Dispenser.FuelInStock.Fuel.Name;
             const quantity = currentItem.Amount;
@@ -248,30 +288,166 @@ export class DataViewComponent implements OnInit {
           this.chartDataService.labels = labels;
           this.chartDataService.data = data;
 
+          this.chartDataService.label = 'Вартість залитого бензину в грн.';
         }
+
       }
       else {
         this.chartDataService.chartType = 'line';
+
+        if (this.selectedFooterMetric === 'volume') {
+          const labels: string[] = [];
+          const data: number[] = [];
+
+          for (const dateRange of dates) {
+            let label: string;
+            if (granulation === 'days') {
+              label = `${dateRange.itemStart.getDate()} ${dateRange.itemStart.toLocaleString('default', { month: 'short' })}`;
+            } else if (granulation === 'months') {
+              label = dateRange.itemStart.toLocaleString('default', { month: 'short' }) + ' ' + dateRange.itemStart.getFullYear();
+            } else {
+              label = dateRange.itemStart.getFullYear().toString();
+            }
+
+            const sumQuantity = this.displayItems.reduce((accumulator, currentItem) => {
+              const itemDate = new Date(currentItem.Timestamp);
+              if (itemDate >= dateRange.itemStart && itemDate < dateRange.itemEnd) {
+                accumulator += +currentItem.Quantity;
+              }
+              return accumulator;
+            }, 0);
+
+            // Add label and sum to respective arrays
+            labels.push(label);
+            data.push(sumQuantity);
+          }
+
+          // Log labels and data
+          console.log(labels);
+          console.log(data);
+
+          this.chartDataService.labels = labels;
+          this.chartDataService.data = data;
+
+          this.chartDataService.label = 'Кількість залитого бензину в л.';
+        } else {
+          const labels: string[] = [];
+          const data: number[] = [];
+
+          for (const dateRange of dates) {
+            let label: string;
+            if (granulation === 'days') {
+              label = `${dateRange.itemStart.getDate()} ${dateRange.itemStart.toLocaleString('default', { month: 'short' })}`;
+            } else if (granulation === 'months') {
+              label = dateRange.itemStart.toLocaleString('default', { month: 'short' }) + ' ' + dateRange.itemStart.getFullYear();
+            } else {
+              label = dateRange.itemStart.getFullYear().toString();
+            }
+
+            const sumQuantity = this.displayItems.reduce((accumulator, currentItem) => {
+              const itemDate = new Date(currentItem.Timestamp);
+              if (itemDate >= dateRange.itemStart && itemDate < dateRange.itemEnd) {
+                accumulator += +currentItem.Amount;
+              }
+              return accumulator;
+            }, 0);
+
+            // Add label and sum to respective arrays
+            labels.push(label);
+            data.push(sumQuantity);
+          }
+
+          // Log labels and data
+          console.log(labels);
+          console.log(data);
+
+          this.chartDataService.labels = labels;
+          this.chartDataService.data = data;
+          this.chartDataService.label = 'Вартість залитого бензину в грн.';
+        }
       }
 
 
     } else {
 
       this.chartDataService.chartType = 'line';
-      
+
       if (this.selectedFooterMetric === 'volume') {
+        const labels: string[] = [];
+        const data: number[] = [];
 
-      }
-      else {
+        for (const dateRange of dates) {
+          let label: string;
+          if (granulation === 'days') {
+            label = `${dateRange.itemStart.getDate()} ${dateRange.itemStart.toLocaleString('default', { month: 'short' })}`;
+          } else if (granulation === 'months') {
+            label = dateRange.itemStart.toLocaleString('default', { month: 'short' }) + ' ' + dateRange.itemStart.getFullYear();
+          } else {
+            label = dateRange.itemStart.getFullYear().toString();
+          }
 
+          const sumQuantity = this.displayItems.reduce((accumulator, currentItem) => {
+            const itemDate = new Date(currentItem.Timestamp);
+            if (itemDate >= dateRange.itemStart && itemDate < dateRange.itemEnd) {
+              accumulator += +currentItem.Quantity;
+            }
+            return accumulator;
+          }, 0);
+
+          // Add label and sum to respective arrays
+          labels.push(label);
+          data.push(sumQuantity);
+        }
+
+        // Log labels and data
+        console.log(labels);
+        console.log(data);
+
+        this.chartDataService.labels = labels;
+        this.chartDataService.data = data;
+
+        this.chartDataService.label = 'Кількість залитого бензину в л.';
+      } else {
+        const labels: string[] = [];
+        const data: number[] = [];
+
+        for (const dateRange of dates) {
+          let label: string;
+          if (granulation === 'days') {
+            label = `${dateRange.itemStart.getDate()} ${dateRange.itemStart.toLocaleString('default', { month: 'short' })}`;
+          } else if (granulation === 'months') {
+            label = dateRange.itemStart.toLocaleString('default', { month: 'short' }) + ' ' + dateRange.itemStart.getFullYear();
+          } else {
+            label = dateRange.itemStart.getFullYear().toString();
+          }
+
+          const sumQuantity = this.displayItems.reduce((accumulator, currentItem) => {
+            const itemDate = new Date(currentItem.Timestamp);
+            if (itemDate >= dateRange.itemStart && itemDate < dateRange.itemEnd) {
+              accumulator += +currentItem.Amount;
+            }
+            return accumulator;
+          }, 0);
+
+          // Add label and sum to respective arrays
+          labels.push(label);
+          data.push(sumQuantity);
+        }
+
+        // Log labels and data
+        console.log(labels);
+        console.log(data);
+
+        this.chartDataService.labels = labels;
+        this.chartDataService.data = data;
+        this.chartDataService.label = 'Вартість залитого бензину в грн.';
       }
 
     }
     console.log(this.chartDataService);
-
-    this.router.navigate(['chart']);
+    this.reinitializeChart();
   }
-
+  
   getDataGranulation(): string {
     const durationInDays = Math.abs((new Date(this.endDate).getTime() - new Date(this.startDate).getTime()) / (1000 * 60 * 60 * 24));
     if (durationInDays < 60) {
@@ -291,37 +467,37 @@ export class DataViewComponent implements OnInit {
     let currentItemEnd = new Date(startDate);
 
     if (granulation === 'days') {
-        currentItemEnd.setDate(currentItemStart.getDate() + 1);
+      currentItemEnd.setDate(currentItemStart.getDate() + 1);
     } else if (granulation === 'months') {
-        currentItemEnd.setMonth(currentItemStart.getMonth() + 1);
-        currentItemEnd.setDate(1); 
+      currentItemEnd.setMonth(currentItemStart.getMonth() + 1);
+      currentItemEnd.setDate(1);
     } else if (granulation === 'years') {
-        currentItemEnd.setFullYear(currentItemStart.getFullYear() + 1);
-        currentItemEnd.setMonth(0); 
-        currentItemEnd.setDate(1); 
+      currentItemEnd.setFullYear(currentItemStart.getFullYear() + 1);
+      currentItemEnd.setMonth(0);
+      currentItemEnd.setDate(1);
     }
 
     while (currentItemEnd <= endDate) {
-        dateRanges.push({ itemStart: new Date(currentItemStart), itemEnd: new Date(currentItemEnd) });
-        
-        if (granulation === 'days') {
-            currentItemStart.setDate(currentItemStart.getDate() + 1);
-            currentItemEnd.setDate(currentItemEnd.getDate() + 1);
-        } else if (granulation === 'months') {
-            currentItemStart.setDate(1);
-            currentItemStart.setMonth(currentItemStart.getMonth() + 1);
-            currentItemEnd.setMonth(currentItemEnd.getMonth() + 1);
-        } else if (granulation === 'years') {
-            currentItemStart.setDate(1);
-            currentItemStart.setMonth(0);
-            currentItemStart.setFullYear(currentItemStart.getFullYear() + 1);
-            currentItemEnd.setFullYear(currentItemEnd.getFullYear() + 1);
-        }
+      dateRanges.push({ itemStart: new Date(currentItemStart), itemEnd: new Date(currentItemEnd) });
+
+      if (granulation === 'days') {
+        currentItemStart.setDate(currentItemStart.getDate() + 1);
+        currentItemEnd.setDate(currentItemEnd.getDate() + 1);
+      } else if (granulation === 'months') {
+        currentItemStart.setDate(1);
+        currentItemStart.setMonth(currentItemStart.getMonth() + 1);
+        currentItemEnd.setMonth(currentItemEnd.getMonth() + 1);
+      } else if (granulation === 'years') {
+        currentItemStart.setDate(1);
+        currentItemStart.setMonth(0);
+        currentItemStart.setFullYear(currentItemStart.getFullYear() + 1);
+        currentItemEnd.setFullYear(currentItemEnd.getFullYear() + 1);
+      }
     }
     dateRanges.push({ itemStart: new Date(currentItemStart), itemEnd: new Date(currentItemEnd) });
-    if (!(granulation === 'days')) {
-    dateRanges[dateRanges.length - 1].itemEnd = new Date(endDate);}
+    endDate.setDate(endDate.getDate() + 1);
+    dateRanges[dateRanges.length - 1].itemEnd = new Date(endDate);
 
     return dateRanges;
-}
+  }
 }
